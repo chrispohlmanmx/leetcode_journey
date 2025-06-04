@@ -35,10 +35,12 @@ def remove_first_unsafe_level(row):
                 row.pop(j)
                 return row
     else:
-        #check for duplicates
-        new_row = []
-        set_row = set(row)
+    
         if row != set(row):
+            #check for duplicates
+            print(f'checking row: {row} for duplicates')
+            new_row = []
+            set_row = set(row)
             for i, num in enumerate(row):
                 if num in set_row:
                     new_row.append(num)
@@ -47,13 +49,25 @@ def remove_first_unsafe_level(row):
                     break
             new_row += row[i+1:]
             return new_row                    
-        else:
-            #need to check for some additional possibilities here
-            # remove first item that is not increasing and check for remaining set being increasing
-            
-            # same but for decreasing
+        print(f'row: {row} is not increasing, decreasing, and has no duplicates but is not safe')
+        #need to check for some additional possibilities here
+        # remove first item that is not increasing and check for remaining set being increasing
+        for i in range(len(row) -1 ):
+
+            print('found one that should be all increasing after removing one value')
+            j = i + 1
+            if row[i] > row[j] and row[j:] == sorted(row[j:]):
+                row.pop(i)
+                return row
+        # same but for decreasing
+        for i in range(len(row) -1 ):
+            print('found one that should be all decreasing after removing one value')
+            j = i + 1
+            if row[i] < row[j] and row[j:] == sorted(row[j:], reverse=True):
+                row.pop(i)
+                return row
     return row
-        
+
 
 def get_level_is_safe(row):
     if isinstance(row, str):
